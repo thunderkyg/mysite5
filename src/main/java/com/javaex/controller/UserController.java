@@ -41,7 +41,7 @@ public class UserController {
 			return "redirect:/main";
 		} else {
 			System.out.println("로그인 실패함");
-			return "redirect:/loginForm?result=fail";
+			return "redirect:/user/loginForm?result=fail";
 		}
 
 	}

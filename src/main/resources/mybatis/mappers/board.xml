@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<!-- updateHit -->
+	<update id='updateHit' parameterType="int">
+		<![CDATA[
+		update board
+		set hit = hit + 1
+		where no = #{no}
+		]]>
+	</update>
+
+	<!-- Select 1 (READ) -->
+	<select id="selectBoard" parameterType="int" resultType="com.javaex.vo.BoardVo">
+	<![CDATA[
+	select  b.no,
+			b.title,
+			b.content,
+			b.hit,
+			b.reg_date regDate,
+			b.user_no userNo,
+			u.name
+	from board b, users u
+	where b.user_no = u.no
+	and b.no = #{no}
+	]]>
+	</select>
+
+	<!-- SelectAll -->
+	<select id="selectAll" parameterType="map" resultType="com.javaex.vo.BoardVo">
+	<![CDATA[
+	select  b.no,
+			b.title,
+			b.content,
+			b.hit,
+			b.reg_date regDate,
+			b.user_no userNo,
+			u.name
+	from users u, board b
+	where u.no = b.user_no
+	]]>
+		<if test="search != null">
+			and(b.no || b.title || u.name || b.content) like '%'||#{search}||'%'
+		</if>
+	<![CDATA[
+	order by no desc
+		]]>
+	</select>
+
+	<!-- Delete -->
+	<delete id="boardDelete" parameterType="int">
+		<![CDATA[
+		delete from board
+		where no = #{no}
+		]]>
+	</delete>
+	
+	<!-- Insert -->
+	<insert id="boardInsert" parameterType="com.javaex.vo.BoardVo" >
+		<![CDATA[
+		insert into board
+		values(seq_board_no.nextval, 
+			   #{title}, 
+			   #{content}, 
+			   0, 
+			   sysdate, 
+			   #{userNo}
+			   )
+		]]>
+	</insert >
+	
+	<!-- Modify -->
+	<update id="boardModify" parameterType="com.javaex.vo.BoardVo">
+		<![CDATA[
+		update board
+		set title = #{title},
+			content = #{content}
+		where no = #{no}
+		]]>
+	</update>
+
+</mapper>
