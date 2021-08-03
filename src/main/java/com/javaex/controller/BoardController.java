@@ -97,15 +97,21 @@ public class BoardController {
 	
 	//MODIFYFORM
 	@RequestMapping(value="/modifyForm", method = { RequestMethod.GET, RequestMethod.POST } )
-	public String modifyForm(@RequestParam("no") int no, Model model) {
+	public String modifyForm(@RequestParam("no") int no, Model model, HttpSession session) {
 		
 		System.out.println("[BoardController.modifyForm()]");
-		
 		BoardVo boardVo = boardService.getBoardModify(no);
 		
-		model.addAttribute("modifyBoardVo", boardVo);
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		return "/board/modifyForm";
+		if(authUser.getNo() == boardVo.getUserNo()) {
+			model.addAttribute("modifyBoardVo", boardVo);
+			return "/board/modifyForm";
+		} else {
+			return "redirect:/board/list";
+		}
+		
+		
 	}
 	
 	//MODIFY
@@ -117,12 +123,6 @@ public class BoardController {
 		System.out.println("[BoardController.modify()]");
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		System.out.println(authUser);
-		System.out.println(boardVo);
-		System.out.println(userno);
-		
-		
 		
 		if(authUser.getNo() == userno) {
 			boardService.boardModify(boardVo);

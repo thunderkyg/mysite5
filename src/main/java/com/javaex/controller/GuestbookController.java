@@ -74,4 +74,32 @@ public class GuestbookController {
 		return "redirect:./addlist";
 	}
 	
+	//------------------------------ Guestbook List (Ajax Method)------------------------------//
+	
+	@RequestMapping(value="/ajaxMain", method = { RequestMethod.GET, RequestMethod.POST } )
+	public String ajaxMain() {
+		System.out.println("[GuestbookController.ajaxMain()]");
+		
+		
+		
+		return "guestbook/ajaxList";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

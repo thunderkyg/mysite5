@@ -40,4 +40,20 @@ public class GuestbookDao {
 
 		return count;
 	}
+	
+	
+	//방명록 글 저장
+	public int guestbookInsertKey(GuestbookVo guestbookVo) {
+		System.out.println("[guestbookDao.guestbookInsertKey]");
+		
+		return sqlSession.insert("guestbook.guestbookInsertKey", guestbookVo);
+	}
+	
+	//방명록 글 저장 - ajax
+	public GuestbookVo selectGuestbook(int no) {
+		System.out.println("[guestbookDao.guestbookInsertKey]");
+		
+		return sqlSession.selectOne("guestbook.selectGuestbook", no);
+	}
+	
 }
