@@ -129,7 +129,7 @@
 		console.log("삭제버튼")
 
 		var no = $(this).data("no");
-
+		console.log(no)
 		$("[name=no]").val(no);
 
 		$("#modalPassword").val("");
