@@ -60,8 +60,8 @@
 
 							<c:forEach items="${getList}" var="GalleryVo" varStatus="status">
 								<!-- 이미지반복영역 -->
-								<li>
-									<div class="view" id="v-${GalleryVo.no}" >
+								<li data-user="${GalleryVo.user_no}">
+									<div class="view" id="v-${GalleryVo.no}">
 										<img id="imgitem" class="imgItem" src="${pageContext.request.contextPath}/upload/${GalleryVo.saveName}" data-no="${GalleryVo.no}">
 										<div class="imgWriter">
 											작성자: <strong>${GalleryVo.name}</strong>
@@ -137,14 +137,24 @@
 					</button>
 					<h4 class="modal-title">이미지보기</h4>
 				</div>
-				<div id="modalview" class="modal-body"></div>
+					<div class="modal-body">
+
+						<div class="formgroup">
+							<img id="viewModelImg" src="">
+							<!-- ajax로 처리 : 이미지출력 위치-->
+						</div>
+
+						<div class="formgroup">
+							<p id="viewModelContent"></p>
+						</div>
+				</div>
 				<form method="post" action="${pageContext.request.contextPath}/gallery/delete">
 					<div class="modal-footer">
 						<input type="hidden" id="vno" value="">
 
 						<button type="button" id="viewclose" class="btn btn-default" data-dismiss="modal">닫기</button>
 
-						<c:if test="${authUser != null}">
+						<c:if test="${authUser.no != null}">
 							<button type="button" class="btn btn-danger" id="btnDel">삭제</button>
 						</c:if>
 
@@ -169,10 +179,15 @@
 		$("#addModal").modal();
 	})
 
-	$("#gallery").on("click", "#imgitem", function() {
+	$(".imgItem").on("click", function() {
+		
+		$("#viewModal").modal();
+		
+		$("#viewModelImg").attr({
+			src : $(this).attr("src")
+		});
 
 		var no = $(this).data("no");
-		console.log(no)
 
 		$.ajax({
 
@@ -186,11 +201,10 @@
 			//dataType : "json",
 			success : function(galleryVo) {
 				
-				$("#viewModal").modal();
-				
-				render(galleryVo);
+				$("#viewModelContent").text(galleryVo.content);
 				
 				$("#vno").val(no);
+
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
@@ -226,32 +240,7 @@
 
 		})
 	})
-
-	$("#viewclose").on("click", function() {
-
-		$("#imageArea").remove();
-
-	})
-
-	$("#xclose").on("click", function() {
-
-		$("#imageArea").remove();
-
-	})
-
-	function render(galleryVo) {
-
-		var str = '<div id="imageArea">'
-		str += '<div class="formgroup">'
-		str += '<img id="viewModelImg" src="${pageContext.request.contextPath}/upload/' + galleryVo.saveName + '">'
-		str += '</div>'
-		str += '<div class="formgroup">'
-		str += '<p id="viewModelContent">' + galleryVo.content + '</p>'
-		str += '</div>'
-		str += '</div>'
-
-		$("#modalview").append(str)
-	}
+	
 </script>
 
 </html>
