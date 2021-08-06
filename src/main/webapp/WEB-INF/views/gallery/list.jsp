@@ -116,9 +116,6 @@
 						<button type="submit" class="btn" id="btnUpload">등록</button>
 					</div>
 				</form>
-[name="no"]
-[name="file"]
-[name="content"]
 
 			</div>
 			<!-- /.modal-content -->
@@ -139,16 +136,16 @@
 					</button>
 					<h4 class="modal-title">이미지보기</h4>
 				</div>
-					<div class="modal-body">
+				<div class="modal-body">
 
-						<div class="formgroup">
-							<img id="viewModelImg" src="">
-							<!-- ajax로 처리 : 이미지출력 위치-->
-						</div>
+					<div class="formgroup">
+						<img id="viewModelImg" src="">
+						<!-- ajax로 처리 : 이미지출력 위치-->
+					</div>
 
-						<div class="formgroup">
-							<p id="viewModelContent"></p>
-						</div>
+					<div class="formgroup">
+						<p id="viewModelContent"></p>
+					</div>
 				</div>
 				<form method="post" action="${pageContext.request.contextPath}/gallery/delete">
 					<div class="modal-footer">
@@ -156,10 +153,7 @@
 
 						<button type="button" id="viewclose" class="btn btn-default" data-dismiss="modal">닫기</button>
 
-						<c:if test="${authUser.no != null}">
-							<button type="button" class="btn btn-danger" id="btnDel">삭제</button>
-						</c:if>
-
+						<button type="button" class="btn btn-danger" id="btnDel">삭제</button>
 					</div>
 
 
@@ -187,7 +181,7 @@
 	})
 
 	//CLICK VIEW
-	$(".imgItem").on("click", function() {
+	$("#viewArea").on("click", "#imgitem", function() {
 		
 		$("#viewModal").modal();
 		
@@ -212,7 +206,6 @@
 				$("#viewModelContent").text(galleryVo.content);
 				
 				$("#vno").val(no);
-
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);

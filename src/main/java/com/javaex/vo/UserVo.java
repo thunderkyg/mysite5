@@ -79,13 +79,14 @@ public class UserVo {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
 	//Method
 	@Override
 	public String toString() {
 		return "UserVo [no=" + no + ", id=" + id + ", password=" + password + ", name=" + name + ", gender=" + gender
 				+ "]";
 	}
+	
 
 	
 	
