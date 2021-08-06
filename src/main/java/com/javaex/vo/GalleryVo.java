@@ -133,11 +133,13 @@ public class GalleryVo {
 	}
 
 	// Method
-	
 	@Override
 	public String toString() {
-		return "GalleryVo [no=" + no + ", user_no=" + user_no + ", content=" + content + ", filePath=" + filePath
-				+ ", orgName=" + orgName + ", saveName=" + saveName + ", fileSize=" + fileSize + "]";
+		return "GalleryVo [no=" + no + ", user_no=" + user_no + ", name=" + name + ", content=" + content
+				+ ", filePath=" + filePath + ", orgName=" + orgName + ", saveName=" + saveName + ", fileSize="
+				+ fileSize + "]";
 	}
+	
+	
 	
 }
