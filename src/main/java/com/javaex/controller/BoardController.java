@@ -25,6 +25,21 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	//기시판 페이징 연습용 리스트
+	@RequestMapping(value="/list2", method = { RequestMethod.GET, RequestMethod.POST } )
+	public String list2(Model model, @RequestParam(value = "crtPage", required = false, defaultValue = "1") int crtPage,
+									 @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+		System.out.println("[BoardController.list2()]");
+		
+		Map<String, Object> listMap= boardService.getList2(crtPage, keyword);
+		System.out.println(listMap);
+		
+		model.addAttribute("listMap", listMap);
+		
+		return "board/list2";
+		
+	}
+	
 	//READ
 	@RequestMapping(value="/read", method = { RequestMethod.GET, RequestMethod.POST } )
 	public String read(Model model, @RequestParam("no") int no) {
@@ -39,7 +54,7 @@ public class BoardController {
 	
 	//LIST
 	@RequestMapping(value="/list", method = { RequestMethod.GET, RequestMethod.POST } )
-	public String list(@RequestParam(required = false) String keyword, Model model) {
+	public String list(@RequestParam(value="keyword", required = false) String keyword, Model model) {
 		System.out.println("[BoardController.list()]");
 		
 		Map<String, Object> searchvalue= new HashMap<String, Object>();

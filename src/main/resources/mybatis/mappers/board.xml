@@ -3,6 +3,59 @@
 
 <mapper namespace="board">
 
+	<!-- Select Total Count -->
+	<select id="selectTotalCnt" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(*)
+			from board b, users u
+			where b.user_no = u.no
+		]]>
+			<!-- <if test="_parameter != null and _parameter != ''  ">  -->
+			<if test="#{keyword != null}">
+			and(b.no || b.title || u.name || b.content) like '%'||#{keyword}||'%'
+			</if>
+			
+	</select>
+
+
+	<!-- 게시판 페이징 연습용 리스트 -->
+	<select id="selectList2" resultType="com.javaex.vo.BoardVo" parameterType="map">
+		<![CDATA[
+			select  rt.rn,
+			        rt.no,
+			        rt.title,
+			        rt.hit,
+			        rt.regDate,
+			        rt.userNo,
+			        rt.name
+			from (select rownum rn,
+			             ot.no,
+			             ot.title,
+			             ot.hit,
+			             ot.regDate,
+			             ot.userNo,
+			             ot.name
+     			  from (select  b.no,
+				                b.title,
+							    b.hit,
+							    b.reg_date regDate,
+							    b.user_no userNo,
+							    u.name        
+			            from board b, users u
+			            where  b.user_no = u.no
+		]]>
+		<if test="#{keyword != null}">
+			and(b.no || b.title || u.name || b.content) like '%'||#{keyword}||'%'
+		</if>
+		<![CDATA[
+						
+         				order by b.no desc) ot) rt
+			where rn>=#{startRnum}
+			and rn <=#{endRnum}
+		]]>
+	</select>
+
+
 	<!-- updateHit -->
 	<update id='updateHit' parameterType="int">
 		<![CDATA[
@@ -56,9 +109,9 @@
 		where no = #{no}
 		]]>
 	</delete>
-	
+
 	<!-- Insert -->
-	<insert id="boardInsert" parameterType="com.javaex.vo.BoardVo" >
+	<insert id="boardInsert" parameterType="com.javaex.vo.BoardVo">
 		<![CDATA[
 		insert into board
 		values(seq_board_no.nextval, 
@@ -69,8 +122,8 @@
 			   #{userNo}
 			   )
 		]]>
-	</insert >
-	
+	</insert>
+
 	<!-- Modify -->
 	<update id="boardModify" parameterType="com.javaex.vo.BoardVo">
 		<![CDATA[
