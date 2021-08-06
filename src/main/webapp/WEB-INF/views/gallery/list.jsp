@@ -116,7 +116,9 @@
 						<button type="submit" class="btn" id="btnUpload">등록</button>
 					</div>
 				</form>
-
+[name="no"]
+[name="file"]
+[name="content"]
 
 			</div>
 			<!-- /.modal-content -->
@@ -132,7 +134,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" id="xclose" class="close" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h4 class="modal-title">이미지보기</h4>
@@ -174,11 +176,17 @@
 </body>
 
 <script type="text/javascript">
+	//CLICK UPLOAD
 	$("#gallery").on("click", "#btnImgUpload", function() {
 
 		$("#addModal").modal();
+		
+		//초기화
+		$("[name=content]").val("")
+		$("[name=file]").val("")
 	})
 
+	//CLICK VIEW
 	$(".imgItem").on("click", function() {
 		
 		$("#viewModal").modal();
@@ -193,12 +201,12 @@
 
 			url : "${pageContext.request.contextPath }/gallery/view",
 			type : "post",
-			//contentType : "application/json",
+			contentType : "application/json",
 			data : {
 				no : no,
 			},
 
-			//dataType : "json",
+			dataType : "json",
 			success : function(galleryVo) {
 				
 				$("#viewModelContent").text(galleryVo.content);
@@ -214,23 +222,24 @@
 
 	})
 
-	$("#btnDel").on("click", function() {
+	//CLICK DELETE
+	$("#viewModal").on("click", "#btnDel", function() {
 
 		var no = $("#vno").val();
-		console.log(no);
+		
 		$.ajax({
 
 			url : "${pageContext.request.contextPath }/gallery/delete",
 			type : "post",
-			//contentType : "application/json",
+			contentType : "application/json",
 			data : {
 				no : no,
 			},
-
-			//dataType : "json",
+			dataType : "json",
 			success : function(count) {
 
 				$("#v-" + no).remove();
+				
 				$("#viewModal").hide();
 
 			},
