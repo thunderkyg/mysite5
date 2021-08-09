@@ -1,5 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -52,6 +55,15 @@ public class UserDao {
 		
 	}
 	
-	
+	//Get Id
+	public UserVo getId(String id) {
+		System.out.println("[UserDao.getId]");
+		
+		Map<String, String> mapId = new HashMap<String, String>();
+		mapId.put("id", id);
+		
+		return sqlSession.selectOne("user.getId", mapId);
+		
+	}
 
 }
