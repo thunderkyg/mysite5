@@ -226,7 +226,7 @@
 			type : "post",
 			contentType : "application/json",
 			data : {
-				no : no,
+				no : no
 			},
 			dataType : "json",
 			success : function(count) {
