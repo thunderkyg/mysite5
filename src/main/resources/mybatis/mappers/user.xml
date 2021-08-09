@@ -45,4 +45,13 @@
 	 	]]>
 	
 	</update>
+	
+		<!-- Get 1 Id -->
+	<select id="getId" parameterType="map" resultType="com.javaex.vo.UserVo">
+	 <![CDATA[	
+	 	select id
+	 	from users
+	 	where id = '${id}'
+	 ]]>
+	</select>
 </mapper>
