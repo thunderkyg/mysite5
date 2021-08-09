@@ -45,6 +45,22 @@ public class UserService {
 		return userDao.selectUser(userVo);
 	}
 	
+	//CHECK OVERLAP
+	public boolean checkId(String id) {
+		System.out.println("[UserService.checkId]");
+		boolean check;
+		
+		if (userDao.getId(id) == null) {
+			//ID 사용 가능할시
+			check = true;
+		} else {
+			//ID 사용 불가능할시
+			check = false;
+		}
+		
+		return check;
+	}
+	
 	
 	
 
