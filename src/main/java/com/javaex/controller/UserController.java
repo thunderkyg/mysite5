@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
@@ -102,5 +105,32 @@ public class UserController {
 		((UserVo)session.getAttribute("authUser")).setName(authUser.getName());
 		return "redirect:/main";
 	}
+	
+	// Overlap Check
+	@ResponseBody
+	@RequestMapping(value = "/overlap", method = { RequestMethod.GET, RequestMethod.POST })
+	public boolean overlap(@RequestParam("id") String id) {
+		System.out.println("[UserController.overlap]");
+			
+		boolean check = userService.checkId(id);
+		System.out.println("DAO" + check);
+		return check;
+	}
+	
+	// JSON 형식으로 데이터 받기
+	@RequestMapping(value = "/join2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String join2(@RequestBody UserVo userVo){
+		System.out.println("[UserController.join2()]");
+		
+		System.out.println(userVo);
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	
 
 }
