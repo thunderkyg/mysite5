@@ -8,6 +8,8 @@
 <link href="${pageContext.request.contextPath}/assets/css/mysite.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/user.css" rel="stylesheet" type="text/css">
 
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
+
 </head>
 
 <body>
@@ -43,12 +45,13 @@
 
 				<div id="user">
 					<div id="joinForm">
-						<form action="${pageContext.request.contextPath}/user/join" method="post">
+						<form action="<%-- ${pageContext.request.contextPath}/user/join --%>" method="post">
 
 							<!-- 아이디 -->
-							<div class="form-group">
+							<div class="form-group" id="result">
 								<label class="form-text" for="input-uid">아이디</label> <input type="text" id="input-uid" name="id" value="" placeholder="아이디를 입력하세요">
-								<button type="button" id="">중복체크</button>
+								<button type="button" id="overlap">중복체크</button>
+								<p id="chkResult"></p>
 							</div>
 
 							<!-- 비밀번호 -->
@@ -93,5 +96,109 @@
 	<!-- //wrap -->
 
 </body>
+
+<script type="text/javascript">
+	//데이터를 json형식 보내기
+	//form 사용 x --> form처럼 사용하기
+	//parameter x --> json으로 데이터 보낸다
+
+	$("#btn-submit").on("click", function() {
+		event.preventDefault();
+		console.log("json방식으로 데이터 보내기");
+
+		//데이터 모으기
+		var userVo = {
+			id : $("#input-uid").val(),
+			password : $("#input-pass").val(),
+			name : $("#input-name").val(),
+			gender : $("[name=gender]").val()
+		};
+
+		console.log(JSON.stringify(userVo))
+
+		$.ajax({
+
+			url : "${pageContext.request.contextPath }/user/join2",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(userVo), //js 객체를 json형식(문자열로 변환해야함;)
+				
+			dataType : "json",
+			success : function(count) {
+
+				$("#v-" + no).remove();
+
+				$("#viewModal").hide();
+
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+
+		})
+
+	})
+
+	//form 전송 버튼 클릭했을때
+	/* $("#joinForm").on("submit", function() {
+		console.log("form 전송 버튼 클릭했을때")
+
+		//Password 8글자 이상 체크
+		var password = $("#input-pass").val();
+		if (password.length < 8) {
+			alert("패스워드를 8글자 이상 입력해 주세요.")
+			return false;
+		}
+
+		//이름 체크
+		var name = $("#input-name").val();
+		if (name.length < 1) {
+			alert("이름을 입력해 주세요");
+			return false;
+		}
+
+		//약관
+		동의
+		var agree = $("#chk-agree").is(":checked");
+		if (agree == false) {
+			alert("약관에 동의해 주세요")
+			return false;
+		}
+
+	}) */
+
+	//아이디체크 버튼 클릭
+	$("#overlap").on("click", function() {
+
+		var id = $("[name=id]").val();
+		console.log(id);
+
+		$.ajax({
+
+			url : "${pageContext.request.contextPath}/user/overlap",
+			type : "post",
+			// contentType : "application/json",
+			data : {
+				id : id
+			},
+
+			dataType : "json",
+			success : function(check) {
+				console.log(check)
+				if (check === true) {
+					$("#chkResult").html('사용 가능한 ID입니다.');
+				} else if (check === false) {
+					$("#chkResult").html('중복된 ID입니다.');
+				} else {
+					$("#chkResult").html('관리자에게 문의');
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		})
+
+	});
+</script>
 
 </html>
