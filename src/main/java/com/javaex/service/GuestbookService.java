@@ -37,8 +37,9 @@ public class GuestbookService {
 	// Ajax
 	public GuestbookVo writeResultVo(GuestbookVo guestbookVo) {
 		System.out.println("GuestbookService.writeResultVo");
+		System.out.println(guestbookVo);
 		//글저장
-		System.out.println();
+		System.out.println("////////////////////////////");
 		int count = guestbookDao.guestbookInsertKey(guestbookVo);
 		System.out.println(guestbookVo);
 		
