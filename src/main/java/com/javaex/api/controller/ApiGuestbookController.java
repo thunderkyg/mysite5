@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,6 +57,20 @@ public class ApiGuestbookController {
 		System.out.println(count);
 		
 		return count;
+	}
+	
+	//안드로이드 방명록 글 1개 가져오기
+	@ResponseBody
+	@RequestMapping(value="/read", method = { RequestMethod.GET, RequestMethod.POST } )
+	public String read(@RequestBody GuestbookVo guestbookVo) {
+		System.out.println("[ApiGuestbookController.read()]");
+		System.out.println(guestbookVo);
+		
+		GuestbookVo resultVo = guestbookService.readGuest(guestbookVo.getGuestbook_no());
+		
+		System.out.println(resultVo);
+		
+		return resultVo;
 	}
 
 }
